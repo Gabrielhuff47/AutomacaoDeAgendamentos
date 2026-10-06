@@ -16,7 +16,7 @@ public class CriarServicoEndpoint : Endpoint<ServicoRequest, ServicoResponse>
     
     public override void Configure()
     {
-        Post("/criar-serviço");
+        Post("/serviço");
         AllowAnonymous();
         Tags("Serviço");
         

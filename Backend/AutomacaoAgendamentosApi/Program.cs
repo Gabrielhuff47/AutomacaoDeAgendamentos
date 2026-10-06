@@ -12,7 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddFastEndpoints()
     .SwaggerDocument(o =>
     {
-        o.AutoTagPathSegmentIndex = 2; 
+        o.DocumentSettings = s =>
+        {
+            s.Title = "Agenda Automatizada API";
+            s.Version = "v1";
+        };
     });
 
 builder.Services.AddOpenApi();
