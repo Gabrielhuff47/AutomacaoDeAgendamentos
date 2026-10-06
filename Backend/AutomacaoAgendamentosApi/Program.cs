@@ -1,5 +1,7 @@
+using AutomacaoAgendamentos.Domain.Interfaces;
 using AutomacaoAgendamentos.Infrastructure.DataContext;
 using AutomacaoAgendamentos.Infrastructure.Repositories;
+using AutomacaoAgendamentos.Service.Services;
 using DefaultNamespace;
 using FastEndpoints;
 using FastEndpoints.Swagger;
@@ -24,6 +26,8 @@ builder.Services.AddDbContext<AgendaDbContext>(options =>
 
 builder.Services.AddScoped<IProfissionalService, ProfissionalService>();
 builder.Services.AddScoped<IProfissionalRepository, ProfissionalRepository>();
+builder.Services.AddScoped<IServicoService, ServicoService>();
+builder.Services.AddScoped<IServicoRepository, ServicoRepository>();
 
 var app = builder.Build();
 app.UseFastEndpoints();

@@ -1,4 +1,5 @@
-﻿using AutomacaoAgendamentosApi.Mapper;
+﻿using AutomacaoAgendamentosApi.DTOs.Responses;
+using AutomacaoAgendamentosApi.Mapper;
 using DefaultNamespace;
 using FastEndpoints;
 

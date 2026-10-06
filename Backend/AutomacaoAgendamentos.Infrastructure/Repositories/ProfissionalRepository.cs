@@ -1,4 +1,5 @@
-﻿using AutomacaoAgendamentos.Infrastructure.DataContext;
+﻿using AutomacaoAgendamentos.Domain.Interfaces;
+using AutomacaoAgendamentos.Infrastructure.DataContext;
 using DefaultNamespace;
 
 namespace AutomacaoAgendamentos.Infrastructure.Repositories;

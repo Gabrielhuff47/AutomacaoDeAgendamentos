@@ -1,4 +1,5 @@
-﻿using DefaultNamespace;
+﻿using AutomacaoAgendamentosApi.DTOs.Responses;
+using DefaultNamespace;
 
 namespace AutomacaoAgendamentosApi.Mapper;
 

@@ -1,4 +1,5 @@
-﻿using AutomacaoAgendamentos.Domain.Shared;
+﻿using AutomacaoAgendamentos.Domain.Interfaces;
+using AutomacaoAgendamentos.Domain.Shared;
 using AutomacaoAgendamentos.Domain.Shared.Enums;
 
 namespace DefaultNamespace;
