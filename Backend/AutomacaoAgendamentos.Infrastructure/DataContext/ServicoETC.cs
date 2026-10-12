@@ -47,6 +47,8 @@ public class ServicoETC : IEntityTypeConfiguration<ServicoEntity>
 
         builder.Property(x => x.DataAtualizacao)
             .HasColumnName("DATA_ATUALIZACAO")
-            .HasColumnType("datetime");
+            .HasColumnType("datetime")
+            .HasDefaultValueSql("GETDATE()")
+            .IsRequired();
     }
 }

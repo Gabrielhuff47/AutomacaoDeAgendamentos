@@ -29,7 +29,8 @@ public class ProfissionalETC : IEntityTypeConfiguration<ProfissionalEntity>
         builder.Property(p => p.UsuarioAtualizacao)
             .HasColumnName("USUARIO_ATUALIZACAO").HasMaxLength(20).IsUnicode(false);
         builder.Property(p => p.DataAtualizacao)
-            .HasColumnName("DATA_ATUALIZACAO").HasColumnType("datetime");
+            .HasColumnName("DATA_ATUALIZACAO").HasColumnType("datetime")
+            .HasDefaultValueSql("GETDATE()");
 
         builder.HasIndex(p => p.Cpf).IsUnique();
         builder.HasIndex(p => p.Usuario).IsUnique();

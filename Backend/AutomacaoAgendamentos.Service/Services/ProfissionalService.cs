@@ -17,7 +17,6 @@ public class ProfissionalService : IProfissionalService
     public async Task<Result<ProfissionalEntity>> CriarProfissional(ProfissionalEntity profissional)
     {
         
-        profissional.DataAtualizacao = DateTime.UtcNow;
         profissional.UsuarioAtualizacao = "Sistema";
 
         var profissionalCriado = await _profissionalRepository.CriarProfissional(profissional);

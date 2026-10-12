@@ -12,7 +12,7 @@ public static class ServicoMapper
         {
             Descricao = servicoRequest.Descricao,
             Valor = servicoRequest.Valor,
-            Duracao =  servicoRequest.Duracao,
+            Duracao =  TimeSpan.FromMinutes(servicoRequest.DuracaoMinutos),
             IdProfissional = servicoRequest.IdProfissional,
             IdTipoServico = servicoRequest.IdTipoServico,
             UsuarioAtualizacao =  servicoRequest.UsuarioAtualizacao
@@ -26,7 +26,7 @@ public static class ServicoMapper
             IdServico = servicoEntity.IdServico,
             Descricao = servicoEntity.Descricao,
             Valor = servicoEntity.Valor,
-            Duracao = servicoEntity.Duracao,
+            DuracaoMinutos = (int)servicoEntity.Duracao.TotalMinutes,
             IdProfissional = servicoEntity.IdProfissional,
             IdTipoServico = servicoEntity.IdTipoServico
         };

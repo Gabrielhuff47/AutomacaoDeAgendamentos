@@ -59,9 +59,9 @@ public class ExcluirProfissionalEndpoint : Endpoint<DeletarProfissionalRequest>
             .Produces(409));
     }
 
-    public override async Task HandleAsync(DeletarProfissionalRequest requisicao, CancellationToken ct)
+    public override async Task HandleAsync(DeletarProfissionalRequest request, CancellationToken ct)
     {
-        var resultado = await _profissionalService.DeletarProfissional(requisicao.IdProfissional);
+        var resultado = await _profissionalService.DeletarProfissional(request.IdProfissional);
 
         if (await resultado.EnviarErroSeFalhouAsync(HttpContext, ct)) return;
 
