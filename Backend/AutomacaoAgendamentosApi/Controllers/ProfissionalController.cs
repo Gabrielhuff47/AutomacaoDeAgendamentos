@@ -1,4 +1,7 @@
-﻿using AutomacaoAgendamentosApi.Mapper;
+﻿using AutomacaoAgendamentosApi.DTOs.Requests;
+using AutomacaoAgendamentosApi.DTOs.Responses;
+using AutomacaoAgendamentosApi.Extensions;
+using AutomacaoAgendamentosApi.Mapper;
 using DefaultNamespace;
 using FastEndpoints;
 
@@ -15,7 +18,7 @@ public class CriarProfissionalEndpoint : Endpoint<ProfissionalRequest, Profissio
 
     public override void Configure()
     {
-        Post("/criar-profissional");
+        Post("/profissional");
         AllowAnonymous();
         Tags("Profissional");
         
@@ -32,5 +35,36 @@ public class CriarProfissionalEndpoint : Endpoint<ProfissionalRequest, Profissio
         var resultado = await _profissionalService.CriarProfissional(profissionalEntity);
         
         await Send.ResponseAsync(resultado.Dados!.ToResponse(), statusCode: 201, cancellation: ct);
+    }
+}
+
+public class ExcluirProfissionalEndpoint : Endpoint<DeletarProfissionalRequest>
+{
+    private readonly IProfissionalService _profissionalService;
+
+    public ExcluirProfissionalEndpoint(IProfissionalService profissionalService)
+    {
+        _profissionalService = profissionalService;
+    }
+
+    public override void Configure()
+    {
+        Delete("/profissional/{IdProfissional}");
+        AllowAnonymous();
+        Tags("Profissional");
+
+        Description(d => d
+            .Produces(204)
+            .Produces(404)
+            .Produces(409));
+    }
+
+    public override async Task HandleAsync(DeletarProfissionalRequest request, CancellationToken ct)
+    {
+        var resultado = await _profissionalService.DeletarProfissional(request.IdProfissional);
+
+        if (await resultado.EnviarErroSeFalhouAsync(HttpContext, ct)) return;
+
+        await Send.NoContentAsync(ct);
     }
 }

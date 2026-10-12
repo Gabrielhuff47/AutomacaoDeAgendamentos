@@ -1,5 +1,7 @@
+using AutomacaoAgendamentos.Domain.Interfaces;
 using AutomacaoAgendamentos.Infrastructure.DataContext;
 using AutomacaoAgendamentos.Infrastructure.Repositories;
+using AutomacaoAgendamentos.Service.Services;
 using DefaultNamespace;
 using FastEndpoints;
 using FastEndpoints.Swagger;
@@ -10,7 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddFastEndpoints()
     .SwaggerDocument(o =>
     {
-        o.AutoTagPathSegmentIndex = 2; 
+        o.DocumentSettings = s =>
+        {
+            s.Title = "Agenda Automatizada API";
+            s.Version = "v1";
+        };
     });
 
 builder.Services.AddOpenApi();
@@ -24,6 +30,8 @@ builder.Services.AddDbContext<AgendaDbContext>(options =>
 
 builder.Services.AddScoped<IProfissionalService, ProfissionalService>();
 builder.Services.AddScoped<IProfissionalRepository, ProfissionalRepository>();
+builder.Services.AddScoped<IServicoService, ServicoService>();
+builder.Services.AddScoped<IServicoRepository, ServicoRepository>();
 
 var app = builder.Build();
 app.UseFastEndpoints();
