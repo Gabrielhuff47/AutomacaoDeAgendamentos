@@ -23,4 +23,28 @@ public class CriarAgendamentoEndpoit(IAgendamentoService agendamentoService) : E
         
         await Send.ResponseAsync(resultado.Dados!.ToResponse(), statusCode: 201, cancellation: cancellationToken);
     }
+    
+    public class ObterAgendamentoEndpoint(IAgendamentoService agendamentoService)
+        : Endpoint<ObterAgendamentoRequest, AgendamentoResponse>
+    {
+        public override void Configure()
+        {
+            Get("/agendamento/{idAgendamento}");
+            AllowAnonymous();
+            Tags("Agendamento");
+        }
+
+        public override async Task HandleAsync(ObterAgendamentoRequest request, CancellationToken ct)
+        {
+            var resultado = await agendamentoService.ObterAgendamentoPorId(request.IdAgendamento, ct);
+
+            if (!resultado.Sucesso)
+            {
+                await Send.NotFoundAsync(ct);
+                return;
+            }
+
+            await Send.ResponseAsync(resultado.Dados!.ToResponse(), cancellation: ct);
+        }
+    }
 }
