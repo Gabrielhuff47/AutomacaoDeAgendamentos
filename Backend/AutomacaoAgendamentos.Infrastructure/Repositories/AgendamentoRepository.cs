@@ -1,6 +1,7 @@
 ﻿using AutomacaoAgendamentos.Domain.Entities;
 using AutomacaoAgendamentos.Domain.Interfaces;
 using AutomacaoAgendamentos.Infrastructure.DataContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutomacaoAgendamentos.Infrastructure.Repositories;
 
@@ -12,4 +13,9 @@ public class AgendamentoRepository(AgendaDbContext context) : IAgendamentoReposi
         await context.SaveChangesAsync();
         return agendamento;
     }
+    
+    public Task<AgendamentoEntity?> ObterAgendamentoPorId(int idAgendamento, CancellationToken ct = default) =>
+        context.AGENDAMENTO
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.IdAgendamento == idAgendamento, ct);
 }
