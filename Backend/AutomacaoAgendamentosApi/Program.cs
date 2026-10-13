@@ -35,6 +35,8 @@ builder.Services.AddScoped<IServicoService, ServicoService>();
 builder.Services.AddScoped<IServicoRepository, ServicoRepository>();
 builder.Services.AddScoped<IAgendaService, AgendaService>();
 builder.Services.AddScoped<IAgendaRepository, AgendaRepository>();
+builder.Services.AddScoped<IAgendamentoService, AgendamentoService>();
+builder.Services.AddScoped<IAgendamentoRepository, AgendamentoRepository>();
 
 var app = builder.Build();
 app.UseFastEndpoints();

@@ -9,6 +9,7 @@ public class AgendaDbContext(DbContextOptions<AgendaDbContext> options) : DbCont
     public DbSet<ProfissionalEntity> PROFISSIONAL { get; set; }
     public DbSet<ServicoEntity> SERVICO { get; set; }
     public DbSet<AgendaEntity> AGENDA { get; set; }
+    public DbSet<AgendamentoEntity> AGENDAMENTO { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
