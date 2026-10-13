@@ -1,6 +1,7 @@
 using AutomacaoAgendamentos.Domain.Interfaces;
 using AutomacaoAgendamentos.Infrastructure.DataContext;
 using AutomacaoAgendamentos.Infrastructure.Repositories;
+using AutomacaoAgendamentos.Service.Interfaces;
 using AutomacaoAgendamentos.Service.Services;
 using DefaultNamespace;
 using FastEndpoints;
@@ -32,6 +33,8 @@ builder.Services.AddScoped<IProfissionalService, ProfissionalService>();
 builder.Services.AddScoped<IProfissionalRepository, ProfissionalRepository>();
 builder.Services.AddScoped<IServicoService, ServicoService>();
 builder.Services.AddScoped<IServicoRepository, ServicoRepository>();
+builder.Services.AddScoped<IAgendaService, AgendaService>();
+builder.Services.AddScoped<IAgendaRepository, AgendaRepository>();
 
 var app = builder.Build();
 app.UseFastEndpoints();
