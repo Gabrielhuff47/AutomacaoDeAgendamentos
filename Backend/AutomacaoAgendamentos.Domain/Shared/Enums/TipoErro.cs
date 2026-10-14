@@ -5,5 +5,6 @@ public enum TipoErro
     Invalido,
     NaoEncontrado,
     Conflito,
-    NaoAutorizado
+    NaoAutorizado,
+    NaoAutenticado
 }

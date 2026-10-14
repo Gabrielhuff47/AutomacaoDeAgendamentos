@@ -22,4 +22,22 @@ public class AgendamentoService(IAgendamentoRepository agendamentoRepository) : 
             ? Result<AgendamentoEntity>.Falha("Agendamento não encontrado.", TipoErro.NaoEncontrado)
             : Result<AgendamentoEntity>.Ok(agendamento);
     }
+
+    public async Task<Result<AgendamentoEntity>> AlterarSituacaoAgendamento(int idAgendamento, int idSituacao, string usuario, CancellationToken ct = default)
+    {
+        var agendamento = await agendamentoRepository.ObterAgendamentoPorId(idAgendamento, ct);
+
+        if(agendamento is null)
+            return Result<AgendamentoEntity>.Falha("AgendamentoNaoEncontrado.", TipoErro.NaoEncontrado);
+
+        if (agendamento.IdSituacao == (int)TipoSituacao.FINALIZADO || agendamento.IdSituacao == (int)TipoSituacao.CANCELADO)
+            return Result<AgendamentoEntity>.Falha("Agendamento já está cancelado ou concluído.");
+        
+        agendamento.IdSituacao = idSituacao;
+        agendamento.UsuarioAtualizacao = usuario;
+        
+        await agendamentoRepository.AlterarSituacaoAgendamento(agendamento, ct);
+        return Result<AgendamentoEntity>.Ok(agendamento);
+     
+    }
 }
