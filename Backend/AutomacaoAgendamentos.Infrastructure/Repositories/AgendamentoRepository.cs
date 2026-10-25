@@ -24,4 +24,10 @@ public class AgendamentoRepository(AgendaDbContext context) : IAgendamentoReposi
         context.AGENDAMENTO.Update(agendamento);
         await context.SaveChangesAsync(ct);
     }
+
+    public async Task ObterAgendamentoDataHorario(DateOnly data, TimeSpan horaInicio, int idServico)
+    {
+        //fazer o metodo para buscarDisponibilidae
+    }
+  
 }
