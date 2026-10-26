@@ -1,4 +1,4 @@
-﻿using AutomacaoAgendamentos.Domain.Entities;
+using AutomacaoAgendamentos.Domain.Entities;
 using AutomacaoAgendamentosApi.DTOs.Requests;
 using AutomacaoAgendamentosApi.DTOs.Responses;
 
@@ -17,16 +17,16 @@ public static class AgendaMapper
             UsuarioAtualizacao = agendaRequest.UsuarioAtualizacao
         };
     }
-    
+
     public static AgendaResponse ToResponse(this AgendaEntity entity)
     {
         return new AgendaResponse
         {
-        IdAgenda = entity.IdAgenda,
-        IdProfissional = entity.IdProfissional,
-        DiaSemana = entity.DiaSemana,
-        HoraInicio = entity.HoraInicio,
-        HoraFim = entity.HoraFim
+            IdAgenda = entity.IdAgenda,
+            IdProfissional = entity.IdProfissional,
+            DiaSemana = entity.DiaSemana,
+            HoraInicio = entity.HoraInicio.ToString(@"hh\:mm\:ss"),
+            HoraFim = entity.HoraFim.ToString(@"hh\:mm\:ss")
         };
-    }    
+    }
 }

@@ -32,8 +32,8 @@ public static class AgendamentoMapper
             NomeCliente = agendamentoEntity.NomeCliente,
             TelefoneCliente = agendamentoEntity.TelefoneCliente,
             Data = agendamentoEntity.Data,
-            HoraInicio = agendamentoEntity.HoraInicio,
-            HoraFim = agendamentoEntity.HoraFim,
+            HoraInicio = agendamentoEntity.HoraInicio.ToString(@"hh\:mm\:ss"),
+            HoraFim = agendamentoEntity.HoraFim.ToString(@"hh\:mm\:ss"),
             IdSituacao = agendamentoEntity.IdSituacao,
             UsuarioAtualizacao = agendamentoEntity.UsuarioAtualizacao
         };
