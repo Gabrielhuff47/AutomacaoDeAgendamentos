@@ -8,12 +8,12 @@ namespace AutomacaoAgendamentos.Infrastructure.Repositories;
 public class ServicoRepository : IServicoRepository
 {
     private readonly AgendaDbContext _context;
-    
+
     public ServicoRepository(AgendaDbContext context)
     {
         _context = context;
     }
-    
+
     public async Task<ServicoEntity> CriarServico(ServicoEntity servico)
     {
         _context.SERVICO.Add(servico);
@@ -29,4 +29,9 @@ public class ServicoRepository : IServicoRepository
             .Select(s => s.Duracao)
             .FirstOrDefaultAsync();
     }
+
+    public Task<ServicoEntity?> ObterPorId(int idServico, CancellationToken ct = default)
+        => _context.SERVICO
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.IdServico == idServico, ct);
 }

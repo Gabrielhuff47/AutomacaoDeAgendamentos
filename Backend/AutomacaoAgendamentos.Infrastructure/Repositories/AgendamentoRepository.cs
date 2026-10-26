@@ -1,5 +1,6 @@
-﻿using AutomacaoAgendamentos.Domain.Entities;
+using AutomacaoAgendamentos.Domain.Entities;
 using AutomacaoAgendamentos.Domain.Interfaces;
+using AutomacaoAgendamentos.Domain.Shared.Enums;
 using AutomacaoAgendamentos.Infrastructure.DataContext;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +14,7 @@ public class AgendamentoRepository(AgendaDbContext context) : IAgendamentoReposi
         await context.SaveChangesAsync();
         return agendamento;
     }
-    
+
     public Task<AgendamentoEntity?> ObterAgendamentoPorId(int idAgendamento, CancellationToken ct = default) =>
         context.AGENDAMENTO
             .AsNoTracking()
@@ -25,9 +26,25 @@ public class AgendamentoRepository(AgendaDbContext context) : IAgendamentoReposi
         await context.SaveChangesAsync(ct);
     }
 
-    public async Task ObterAgendamentoDataHorario(DateOnly data, TimeSpan horaInicio, int idServico)
+    /// <summary>
+    /// Verifica se já existe algum agendamento ativo do profissional, na mesma data,
+    /// que se sobreponha ao intervalo [horaInicio, horaFim).
+    /// Agendamentos CANCELADOS ou REMARCADOS liberam o horário e não são considerados.
+    /// Um serviço pode começar exatamente quando o anterior termina (ex.: termina 10:00, próximo começa 10:00).
+    /// </summary>
+    public Task<bool> ExisteConflitoHorario(int idProfissional, DateOnly data, TimeSpan horaInicio, TimeSpan horaFim, CancellationToken ct = default)
     {
-        //fazer o metodo para buscarDisponibilidae
+        const int cancelado = (int)TipoSituacao.CANCELADO;
+        const int remarcado = (int)TipoSituacao.REMARCADO;
+
+        return context.AGENDAMENTO
+            .AsNoTracking()
+            .AnyAsync(a =>
+                a.IdProfissional == idProfissional &&
+                a.Data == data &&
+                a.IdSituacao != cancelado &&
+                a.IdSituacao != remarcado &&
+                a.HoraInicio < horaFim &&
+                a.HoraFim > horaInicio, ct);
     }
-  
 }

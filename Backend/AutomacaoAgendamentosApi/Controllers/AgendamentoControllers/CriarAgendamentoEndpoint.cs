@@ -20,7 +20,7 @@ public class CriarAgendamentoEndpoint(IAgendamentoService agendamentoService) : 
     {
         var agendamentoEntity = agendamentoRequest.ToEntity();
 
-        var resultado = await agendamentoService.CriarAgendamento(agendamentoEntity);
+        var resultado = await agendamentoService.CriarAgendamento(agendamentoEntity, cancellationToken);
         
         if (await resultado.EnviarErroSeFalhouAsync(HttpContext, cancellationToken))
             return;

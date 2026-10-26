@@ -13,6 +13,7 @@ public static class ResultExtensions
         TipoErro.Conflito => StatusCodes.Status409Conflict,
         TipoErro.NaoAutorizado => StatusCodes.Status403Forbidden,
         TipoErro.NaoAutenticado => StatusCodes.Status401Unauthorized,
+        TipoErro.RegraDeNegocio => StatusCodes.Status422UnprocessableEntity,
         _ => StatusCodes.Status400BadRequest
     };
 

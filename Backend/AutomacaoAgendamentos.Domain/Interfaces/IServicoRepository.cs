@@ -6,4 +6,5 @@ public interface IServicoRepository
 {
     Task<ServicoEntity> CriarServico(ServicoEntity servico);
     Task<TimeSpan> ObterDuracao(int idServico);
+    Task<ServicoEntity?> ObterPorId(int idServico, CancellationToken cancellationToken);
 }

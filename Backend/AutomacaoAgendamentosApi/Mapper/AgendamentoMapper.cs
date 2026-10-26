@@ -17,8 +17,6 @@ public static class AgendamentoMapper
             TelefoneCliente = agendamentoRequest.TelefoneCliente,
             Data = agendamentoRequest.Data,
             HoraInicio = agendamentoRequest.HoraInicio,
-            HoraFim = agendamentoRequest.HoraFim,
-            IdSituacao = agendamentoRequest.IdSituacao,
             UsuarioAtualizacao = agendamentoRequest.UsuarioAtualizacao
         };
     }

@@ -1,4 +1,4 @@
-﻿namespace AutomacaoAgendamentosApi.DTOs.Requests;
+namespace AutomacaoAgendamentosApi.DTOs.Requests;
 
 public class AgendamentoRequest
 {
@@ -9,7 +9,5 @@ public class AgendamentoRequest
     public string TelefoneCliente { get; set; }
     public DateOnly Data { get; set; }
     public TimeSpan HoraInicio { get; set; }
-    public TimeSpan HoraFim { get; set; }
-    public int IdSituacao { get; set; }
     public string UsuarioAtualizacao { get; set; }
 }

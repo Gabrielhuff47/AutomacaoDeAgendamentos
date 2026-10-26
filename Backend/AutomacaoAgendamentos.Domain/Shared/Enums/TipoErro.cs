@@ -6,5 +6,6 @@ public enum TipoErro
     NaoEncontrado,
     Conflito,
     NaoAutorizado,
-    NaoAutenticado
+    NaoAutenticado,
+    RegraDeNegocio
 }
