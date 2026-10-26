@@ -21,21 +21,13 @@ public class AgendamentoService(
         if (servico.IdProfissional != agendamentoEntity.IdProfissional)
             return Result<AgendamentoEntity>.Falha("O serviço informado não pertence a este profissional.", TipoErro.RegraDeNegocio);
         
-        //esse não precisa estar aqui --> refator
-        // USAR FluentValidation
-        if (agendamentoEntity.HoraInicio < TimeSpan.Zero || agendamentoEntity.HoraInicio >= TimeSpan.FromDays(1))
-            return Result<AgendamentoEntity>.Falha("Hora inicial inválida.", TipoErro.RegraDeNegocio);
-
+        
         var inicioAgendamento = agendamentoEntity.Data.ToDateTime(TimeOnly.FromTimeSpan(agendamentoEntity.HoraInicio));
         if (inicioAgendamento < DateTime.Now)
             return Result<AgendamentoEntity>.Falha("Não é possível agendar em uma data/horário que já passou.", TipoErro.RegraDeNegocio);
         
         var horaFim = CalculaHoraFim(agendamentoEntity.HoraInicio, servico.Duracao);
-
-        if (horaFim.Days > 0)
-            return Result<AgendamentoEntity>.Falha("O serviço ultrapassa o fim do dia.", TipoErro.RegraDeNegocio);
-
-        // 4. O horário precisa caber dentro do expediente do profissional naquele dia da semana
+        
         var dentroDoExpediente = await agendaRepository.HorarioDentroDoExpediente(
             agendamentoEntity.IdProfissional,
             agendamentoEntity.Data.DayOfWeek,
@@ -44,9 +36,8 @@ public class AgendamentoService(
             ct);
 
         if (!dentroDoExpediente)
-            return Result<AgendamentoEntity>.Falha("Horário fora do expediente do profissional.", TipoErro.RegraDeNegocio);
-
-        // 5. Não pode sobrepor outro agendamento ativo do mesmo profissional
+            return Result<AgendamentoEntity>.Falha("Horário fora do expediente do profissional.", TipoErro.Conflito);
+        
         var existeConflito = await agendamentoRepository.ExisteConflitoHorario(
             agendamentoEntity.IdProfissional,
             agendamentoEntity.Data,
@@ -55,7 +46,7 @@ public class AgendamentoService(
             ct);
 
         if (existeConflito)
-            return Result<AgendamentoEntity>.Falha("Falha no agendamento, horário indisponível.", TipoErro.RegraDeNegocio);
+            return Result<AgendamentoEntity>.Falha("Falha no agendamento, horário indisponível.", TipoErro.Conflito);
 
         agendamentoEntity.HoraFim = horaFim;
         agendamentoEntity.IdSituacao = (int)TipoSituacao.AGENDADO;
@@ -90,10 +81,7 @@ public class AgendamentoService(
         return Result<AgendamentoEntity>.Ok(agendamento);
 
     }
-
-    /// <summary>
-    /// Calcula a hora final do atendimento com base na hora inicial + duração do serviço.
-    /// </summary>
+    
     private static TimeSpan CalculaHoraFim(TimeSpan horaInicio, TimeSpan duracaoServico)
         => horaInicio + duracaoServico;
 }
