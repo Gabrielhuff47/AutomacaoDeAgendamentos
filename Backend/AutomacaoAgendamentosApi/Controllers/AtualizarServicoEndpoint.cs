@@ -12,7 +12,7 @@ public class AtualizarServicoEndpoint(IServicoService servicoService)
 {
     public override void Configure()
     {
-        Put("/servico/{idServico}");
+        Patch("/servico/{idServico}");
         AllowAnonymous();
         Tags("Servico");
     }

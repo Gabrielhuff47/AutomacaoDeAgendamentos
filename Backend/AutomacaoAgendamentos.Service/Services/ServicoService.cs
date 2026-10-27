@@ -14,16 +14,16 @@ public class ServicoService(IServicoRepository servicoRepository) : IServicoServ
         return Result<ServicoEntity>.Ok(servicoCriado);
     }
 
-    public async Task<Result<ServicoEntity>> AtualizarServico(int idServico, string descricao, decimal valor, int duracaoMinutos, int idTipoServico, string usuario, CancellationToken ct = default)
+    public async Task<Result<ServicoEntity>> AtualizarServico(int idServico, string? descricao, decimal? valor, int? duracaoMinutos, int? idTipoServico, string usuario, CancellationToken ct = default)
     {
         var servico = await servicoRepository.ObterPorId(idServico, ct);
         if (servico is null)
             return Result<ServicoEntity>.Falha("Serviço não encontrado.", TipoErro.NaoEncontrado);
 
-        servico.Descricao = descricao;
-        servico.Valor = valor;
-        servico.Duracao = TimeSpan.FromMinutes(duracaoMinutos);
-        servico.IdTipoServico = idTipoServico;
+        if (descricao is not null) servico.Descricao = descricao;
+        if (valor is not null) servico.Valor = valor.Value;
+        if (duracaoMinutos is not null) servico.Duracao = TimeSpan.FromMinutes(duracaoMinutos.Value);
+        if (idTipoServico is not null) servico.IdTipoServico = idTipoServico.Value;
         servico.UsuarioAtualizacao = usuario;
 
         var servicoAtualizado = await servicoRepository.AtualizarServico(servico, ct);
