@@ -14,6 +14,18 @@ public class AgendaRepository(AgendaDbContext context) : IAgendaRepository
         return agenda;
     }
 
+    public Task<AgendaEntity?> ObterPorId(int idAgenda, CancellationToken ct = default)
+        => context.AGENDA
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.IdAgenda == idAgenda, ct);
+
+    public async Task<AgendaEntity> AtualizarAgenda(AgendaEntity agenda, CancellationToken ct = default)
+    {
+        context.AGENDA.Update(agenda);
+        await context.SaveChangesAsync(ct);
+        return agenda;
+    }
+
     /// <summary>
     /// Verifica se o intervalo [horaInicio, horaFim] cabe inteiro dentro de algum
     /// período de expediente cadastrado para o profissional naquele dia da semana.
