@@ -155,6 +155,16 @@ public class AgendamentoService(
 
     }
 
+    public async Task<Result<bool>> ExcluirAgendamento(int idAgendamento, CancellationToken ct = default)
+    {
+        var agendamento = await agendamentoRepository.ObterAgendamentoPorId(idAgendamento, ct);
+        if (agendamento is null)
+            return Result<bool>.Falha("Agendamento não encontrado.", TipoErro.NaoEncontrado);
+
+        await agendamentoRepository.ExcluirAgendamento(agendamento, ct);
+        return Result<bool>.Ok(true);
+    }
+
     /// <summary>
     /// Calcula a hora final do atendimento com base na hora inicial + duração do serviço.
     /// </summary>

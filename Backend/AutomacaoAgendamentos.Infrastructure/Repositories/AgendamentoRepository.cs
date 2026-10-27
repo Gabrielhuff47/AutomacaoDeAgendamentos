@@ -48,6 +48,12 @@ public class AgendamentoRepository(AgendaDbContext context) : IAgendamentoReposi
         await context.SaveChangesAsync(ct);
     }
 
+    public async Task ExcluirAgendamento(AgendamentoEntity agendamento, CancellationToken ct = default)
+    {
+        context.AGENDAMENTO.Remove(agendamento);
+        await context.SaveChangesAsync(ct);
+    }
+
     /// <summary>
     /// Verifica se já existe algum agendamento ativo do profissional, na mesma data,
     /// que se sobreponha ao intervalo [horaInicio, horaFim).

@@ -10,5 +10,6 @@ public interface IAgendamentoRepository
     Task<List<AgendamentoEntity>> ObterAgendamentosPorProfissionalEData(int idProfissional, DateOnly data, CancellationToken cancellationToken);
     Task<AgendamentoEntity> RemarcarAgendamento(AgendamentoEntity agendamento, CancellationToken cancellationToken);
     Task AlterarSituacaoAgendamento(AgendamentoEntity agendamento, CancellationToken cancellationToken);
+    Task ExcluirAgendamento(AgendamentoEntity agendamento, CancellationToken cancellationToken);
     Task<bool> ExisteConflitoHorario(int idProfissional, DateOnly data, TimeSpan horaInicio, TimeSpan horaFim, CancellationToken cancellationToken);
 }
