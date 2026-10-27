@@ -5,25 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutomacaoAgendamentos.Infrastructure.Repositories;
 
-public class ServicoRepository : IServicoRepository
+public class ServicoRepository(AgendaDbContext context) : IServicoRepository
 {
-    private readonly AgendaDbContext _context;
-
-    public ServicoRepository(AgendaDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<ServicoEntity> CriarServico(ServicoEntity servico)
     {
-        _context.SERVICO.Add(servico);
-        await _context.SaveChangesAsync();
+        context.SERVICO.Add(servico);
+        await context.SaveChangesAsync();
         return servico;
     }
 
     public async Task<TimeSpan> ObterDuracao(int idServico)
     {
-        return await _context.SERVICO
+        return await context.SERVICO
             .AsNoTracking()
             .Where(s => s.IdServico == idServico)
             .Select(s => s.Duracao)
@@ -31,7 +24,20 @@ public class ServicoRepository : IServicoRepository
     }
 
     public Task<ServicoEntity?> ObterPorId(int idServico, CancellationToken ct = default)
-        => _context.SERVICO
+        => context.SERVICO
             .AsNoTracking()
             .FirstOrDefaultAsync(s => s.IdServico == idServico, ct);
+
+    public async Task<ServicoEntity> AtualizarServico(ServicoEntity servico, CancellationToken ct = default)
+    {
+        context.SERVICO.Update(servico);
+        await context.SaveChangesAsync(ct);
+        return servico;
+    }
+
+    public async Task ExcluirServico(ServicoEntity servico, CancellationToken ct = default)
+    {
+        context.SERVICO.Remove(servico);
+        await context.SaveChangesAsync(ct);
+    }
 }
