@@ -1,4 +1,4 @@
-﻿namespace DefaultNamespace;
+namespace AutomacaoAgendamentos.Domain.Entities;
 
 public class ProfissionalEntity
 {
@@ -11,8 +11,8 @@ public class ProfissionalEntity
     public string Telefone { get; set; } = string.Empty;
     public int IdEstabelecimento { get; set; }
     public bool IsAdmin { get; set; }
-    
-    
+
+
     public DateTime DataAtualizacao { get; set; }
     public string UsuarioAtualizacao { get; set; } = string.Empty;
 }

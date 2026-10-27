@@ -3,7 +3,6 @@ using AutomacaoAgendamentos.Infrastructure.DataContext;
 using AutomacaoAgendamentos.Infrastructure.Repositories;
 using AutomacaoAgendamentos.Service.Interfaces;
 using AutomacaoAgendamentos.Service.Services;
-using DefaultNamespace;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.EntityFrameworkCore;

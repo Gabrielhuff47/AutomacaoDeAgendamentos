@@ -1,8 +1,8 @@
-﻿using AutomacaoAgendamentosApi.DTOs.Requests;
+using AutomacaoAgendamentos.Service.Interfaces;
+using AutomacaoAgendamentosApi.DTOs.Requests;
 using AutomacaoAgendamentosApi.DTOs.Responses;
 using AutomacaoAgendamentosApi.Extensions;
 using AutomacaoAgendamentosApi.Mapper;
-using DefaultNamespace;
 using FastEndpoints;
 
 namespace AutomacaoAgendamentosApi.Controllers;

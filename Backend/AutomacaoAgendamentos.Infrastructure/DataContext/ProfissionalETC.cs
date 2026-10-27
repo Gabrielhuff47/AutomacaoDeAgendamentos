@@ -1,4 +1,4 @@
-﻿using DefaultNamespace;
+﻿using AutomacaoAgendamentos.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

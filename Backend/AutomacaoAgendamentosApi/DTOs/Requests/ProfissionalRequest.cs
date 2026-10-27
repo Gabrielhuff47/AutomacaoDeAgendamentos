@@ -1,4 +1,4 @@
-﻿namespace DefaultNamespace;
+namespace AutomacaoAgendamentosApi.DTOs.Requests;
 
 public class ProfissionalRequest
 {

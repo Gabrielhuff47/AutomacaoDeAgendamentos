@@ -1,5 +1,6 @@
-﻿using AutomacaoAgendamentosApi.DTOs.Responses;
-using DefaultNamespace;
+using AutomacaoAgendamentos.Domain.Entities;
+using AutomacaoAgendamentosApi.DTOs.Requests;
+using AutomacaoAgendamentosApi.DTOs.Responses;
 
 namespace AutomacaoAgendamentosApi.Mapper;
 

@@ -1,33 +1,35 @@
-﻿using AutomacaoAgendamentos.Domain.Interfaces;
+﻿using AutomacaoAgendamentos.Domain.Entities;
+using AutomacaoAgendamentos.Domain.Interfaces;
 using AutomacaoAgendamentos.Infrastructure.DataContext;
-using DefaultNamespace;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutomacaoAgendamentos.Infrastructure.Repositories;
 
-public class ProfissionalRepository : IProfissionalRepository
+public class ProfissionalRepository(AgendaDbContext context) : IProfissionalRepository
 {
-    private readonly AgendaDbContext _context;
-
-    public ProfissionalRepository(AgendaDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<ProfissionalEntity> CriarProfissional(ProfissionalEntity profissional)
     {
-        _context.PROFISSIONAL.Add(profissional);
-        await _context.SaveChangesAsync();
+        context.PROFISSIONAL.Add(profissional);
+        await context.SaveChangesAsync();
         return profissional;
     }
+
     public Task<ProfissionalEntity?> ObterPorId(int id)
-        => _context.PROFISSIONAL.FirstOrDefaultAsync(p => p.IdProfissional == id);
+        => context.PROFISSIONAL.FirstOrDefaultAsync(p => p.IdProfissional == id);
+
+    public async Task<ProfissionalEntity> AtualizarProfissional(ProfissionalEntity profissional, CancellationToken ct = default)
+    {
+        context.PROFISSIONAL.Update(profissional);
+        await context.SaveChangesAsync(ct);
+        return profissional;
+    }
+
     public Task<bool> PossuiServicos(int idProfissional)
-        => _context.SERVICO.AnyAsync(s => s.IdProfissional == idProfissional);
+        => context.SERVICO.AnyAsync(s => s.IdProfissional == idProfissional);
 
     public async Task DeletarProfissional(ProfissionalEntity profissional)
     {
-        _context.PROFISSIONAL.Remove(profissional);
-        await _context.SaveChangesAsync();
+        context.PROFISSIONAL.Remove(profissional);
+        await context.SaveChangesAsync();
     }
 }

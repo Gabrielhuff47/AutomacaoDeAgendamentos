@@ -1,41 +1,50 @@
-﻿using AutomacaoAgendamentos.Domain.Interfaces;
+﻿using AutomacaoAgendamentos.Domain.Entities;
+using AutomacaoAgendamentos.Domain.Interfaces;
 using AutomacaoAgendamentos.Domain.Shared;
 using AutomacaoAgendamentos.Domain.Shared.Enums;
-using DefaultNamespace;
+using AutomacaoAgendamentos.Service.Interfaces;
 
 namespace AutomacaoAgendamentos.Service.Services;
 
-public class ProfissionalService : IProfissionalService
+public class ProfissionalService(IProfissionalRepository profissionalRepository) : IProfissionalService
 {
-    private readonly IProfissionalRepository _profissionalRepository;
-    
-    public ProfissionalService(IProfissionalRepository profissionalRepository)
-    {
-        _profissionalRepository = profissionalRepository;
-    }
-    
     public async Task<Result<ProfissionalEntity>> CriarProfissional(ProfissionalEntity profissional)
     {
-        
         profissional.UsuarioAtualizacao = "Sistema";
 
-        var profissionalCriado = await _profissionalRepository.CriarProfissional(profissional);
+        var profissionalCriado = await profissionalRepository.CriarProfissional(profissional);
         return Result<ProfissionalEntity>.Ok(profissionalCriado);
     }
-    
+
+    public async Task<Result<ProfissionalEntity>> AtualizarProfissional(int idProfissional, string? nome, string? email, string? telefone, string? senha, string usuario, CancellationToken ct = default)
+    {
+        var profissional = await profissionalRepository.ObterPorId(idProfissional);
+        if (profissional is null)
+            return Result<ProfissionalEntity>.Falha("Profissional não encontrado.", TipoErro.NaoEncontrado);
+
+        if (nome is not null) profissional.Nome = nome;
+        if (email is not null) profissional.Email = email;
+        if (telefone is not null) profissional.Telefone = telefone;
+        if (senha is not null) profissional.Senha = senha;
+        profissional.UsuarioAtualizacao = usuario;
+
+        var profissionalAtualizado = await profissionalRepository.AtualizarProfissional(profissional, ct);
+        return Result<ProfissionalEntity>.Ok(profissionalAtualizado);
+    }
+
     public async Task<Result> DeletarProfissional(int idProfissional)
     {
-        var profissional = await _profissionalRepository.ObterPorId(idProfissional);
+        var profissional = await profissionalRepository.ObterPorId(idProfissional);
 
         if (profissional is null)
             return Result.Falha("Profissional não encontrado.", TipoErro.NaoEncontrado);
 
-        if (await _profissionalRepository.PossuiServicos(idProfissional))
+        if (await profissionalRepository.PossuiServicos(idProfissional))
             return Result.Falha(
                 "Não é possível excluir o profissional, pois ele possui serviços cadastrados.",
                 TipoErro.Conflito);
 
-        await _profissionalRepository.DeletarProfissional(profissional);
+        await profissionalRepository.DeletarProfissional(profissional);
         return Result.Ok();
     }
 }

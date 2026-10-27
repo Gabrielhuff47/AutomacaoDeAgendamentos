@@ -1,5 +1,4 @@
 ﻿using AutomacaoAgendamentos.Domain.Entities;
-using DefaultNamespace;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutomacaoAgendamentos.Infrastructure.DataContext;
