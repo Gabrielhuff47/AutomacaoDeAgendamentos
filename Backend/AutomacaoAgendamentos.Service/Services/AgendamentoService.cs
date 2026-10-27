@@ -74,6 +74,12 @@ public class AgendamentoService(
         return Result<List<AgendamentoEntity>>.Ok(agendamentos);
     }
 
+    public async Task<Result<List<AgendamentoEntity>>> ObterAgendamentosPorProfissionalEData(int idProfissional, DateOnly data, CancellationToken ct = default)
+    {
+        var agendamentos = await agendamentoRepository.ObterAgendamentosPorProfissionalEData(idProfissional, data, ct);
+        return Result<List<AgendamentoEntity>>.Ok(agendamentos);
+    }
+
     public async Task<Result<AgendamentoEntity>> AlterarSituacaoAgendamento(int idAgendamento, int idSituacao, string usuario, CancellationToken ct = default)
     {
         var agendamento = await agendamentoRepository.ObterAgendamentoPorId(idAgendamento, ct);

@@ -28,6 +28,13 @@ public class AgendamentoRepository(AgendaDbContext context) : IAgendamentoReposi
             .ThenBy(a => a.HoraInicio)
             .ToListAsync(ct);
 
+    public Task<List<AgendamentoEntity>> ObterAgendamentosPorProfissionalEData(int idProfissional, DateOnly data, CancellationToken ct = default) =>
+        context.AGENDAMENTO
+            .AsNoTracking()
+            .Where(a => a.IdProfissional == idProfissional && a.Data == data)
+            .OrderBy(a => a.HoraInicio)
+            .ToListAsync(ct);
+
     public async Task AlterarSituacaoAgendamento(AgendamentoEntity agendamento, CancellationToken ct = default)
     {
         context.AGENDAMENTO.Update(agendamento);
