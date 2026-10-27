@@ -19,15 +19,18 @@ public class AgendamentoService(
             return Result<AgendamentoEntity>.Falha("Serviço não encontrado.", TipoErro.NaoEncontrado);
 
         if (servico.IdProfissional != agendamentoEntity.IdProfissional)
-            return Result<AgendamentoEntity>.Falha("O serviço informado não pertence a este profissional.", TipoErro.RegraDeNegocio);
-        
-        
+            return Result<AgendamentoEntity>.Falha("O serviço informado não pertence a este profissional.");
+
         var inicioAgendamento = agendamentoEntity.Data.ToDateTime(TimeOnly.FromTimeSpan(agendamentoEntity.HoraInicio));
         if (inicioAgendamento < DateTime.Now)
             return Result<AgendamentoEntity>.Falha("Não é possível agendar em uma data/horário que já passou.", TipoErro.RegraDeNegocio);
         
         var horaFim = CalculaHoraFim(agendamentoEntity.HoraInicio, servico.Duracao);
-        
+
+        if (horaFim.Days > 0)
+            return Result<AgendamentoEntity>.Falha("O serviço ultrapassa o fim do dia.");
+
+        // 4. O horário precisa caber dentro do expediente do profissional naquele dia da semana
         var dentroDoExpediente = await agendaRepository.HorarioDentroDoExpediente(
             agendamentoEntity.IdProfissional,
             agendamentoEntity.Data.DayOfWeek,
@@ -37,7 +40,8 @@ public class AgendamentoService(
 
         if (!dentroDoExpediente)
             return Result<AgendamentoEntity>.Falha("Horário fora do expediente do profissional.", TipoErro.Conflito);
-        
+
+        // 5. Não pode sobrepor outro agendamento ativo do mesmo profissional
         var existeConflito = await agendamentoRepository.ExisteConflitoHorario(
             agendamentoEntity.IdProfissional,
             agendamentoEntity.Data,
@@ -64,6 +68,12 @@ public class AgendamentoService(
             : Result<AgendamentoEntity>.Ok(agendamento);
     }
 
+    public async Task<Result<List<AgendamentoEntity>>> ObterAgendamentosPorProfissional(int idProfissional, CancellationToken ct = default)
+    {
+        var agendamentos = await agendamentoRepository.ObterAgendamentosPorProfissional(idProfissional, ct);
+        return Result<List<AgendamentoEntity>>.Ok(agendamentos);
+    }
+
     public async Task<Result<AgendamentoEntity>> AlterarSituacaoAgendamento(int idAgendamento, int idSituacao, string usuario, CancellationToken ct = default)
     {
         var agendamento = await agendamentoRepository.ObterAgendamentoPorId(idAgendamento, ct);
@@ -81,7 +91,10 @@ public class AgendamentoService(
         return Result<AgendamentoEntity>.Ok(agendamento);
 
     }
-    
+
+    /// <summary>
+    /// Calcula a hora final do atendimento com base na hora inicial + duração do serviço.
+    /// </summary>
     private static TimeSpan CalculaHoraFim(TimeSpan horaInicio, TimeSpan duracaoServico)
         => horaInicio + duracaoServico;
 }

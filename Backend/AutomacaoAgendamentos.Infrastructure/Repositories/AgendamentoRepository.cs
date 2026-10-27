@@ -20,6 +20,14 @@ public class AgendamentoRepository(AgendaDbContext context) : IAgendamentoReposi
             .AsNoTracking()
             .FirstOrDefaultAsync(a => a.IdAgendamento == idAgendamento, ct);
 
+    public Task<List<AgendamentoEntity>> ObterAgendamentosPorProfissional(int idProfissional, CancellationToken ct = default) =>
+        context.AGENDAMENTO
+            .AsNoTracking()
+            .Where(a => a.IdProfissional == idProfissional)
+            .OrderBy(a => a.Data)
+            .ThenBy(a => a.HoraInicio)
+            .ToListAsync(ct);
+
     public async Task AlterarSituacaoAgendamento(AgendamentoEntity agendamento, CancellationToken ct = default)
     {
         context.AGENDAMENTO.Update(agendamento);
