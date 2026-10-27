@@ -35,6 +35,13 @@ public class AgendamentoRepository(AgendaDbContext context) : IAgendamentoReposi
             .OrderBy(a => a.HoraInicio)
             .ToListAsync(ct);
 
+    public async Task<AgendamentoEntity> RemarcarAgendamento(AgendamentoEntity agendamento, CancellationToken ct = default)
+    {
+        context.AGENDAMENTO.Update(agendamento);
+        await context.SaveChangesAsync(ct);
+        return agendamento;
+    }
+
     public async Task AlterarSituacaoAgendamento(AgendamentoEntity agendamento, CancellationToken ct = default)
     {
         context.AGENDAMENTO.Update(agendamento);
