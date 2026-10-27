@@ -31,4 +31,14 @@ public class AgendaService(IAgendaRepository agendaRepository) : IAgendaService
         var agendaAtualizada = await agendaRepository.AtualizarAgenda(agenda, ct);
         return Result<AgendaEntity>.Ok(agendaAtualizada);
     }
+
+    public async Task<Result<bool>> ExcluirAgenda(int idAgenda, CancellationToken ct = default)
+    {
+        var agenda = await agendaRepository.ObterPorId(idAgenda, ct);
+        if (agenda is null)
+            return Result<bool>.Falha("Agenda não encontrada.", TipoErro.NaoEncontrado);
+
+        await agendaRepository.ExcluirAgenda(agenda, ct);
+        return Result<bool>.Ok(true);
+    }
 }

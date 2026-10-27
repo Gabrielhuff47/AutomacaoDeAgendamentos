@@ -26,6 +26,12 @@ public class AgendaRepository(AgendaDbContext context) : IAgendaRepository
         return agenda;
     }
 
+    public async Task ExcluirAgenda(AgendaEntity agenda, CancellationToken ct = default)
+    {
+        context.AGENDA.Remove(agenda);
+        await context.SaveChangesAsync(ct);
+    }
+
     /// <summary>
     /// Verifica se o intervalo [horaInicio, horaFim] cabe inteiro dentro de algum
     /// período de expediente cadastrado para o profissional naquele dia da semana.

@@ -7,4 +7,5 @@ public interface IAgendaService
 {
     Task<Result<AgendaEntity>> CriarAgenda(AgendaEntity agenda);
     Task<Result<AgendaEntity>> AtualizarAgenda(int idAgenda, DayOfWeek diaSemana, TimeSpan horaInicio, TimeSpan horaFim, string usuario, CancellationToken ct = default);
+    Task<Result<bool>> ExcluirAgenda(int idAgenda, CancellationToken ct = default);
 }
